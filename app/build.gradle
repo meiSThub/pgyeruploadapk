@@ -73,6 +73,12 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 pgyer {
-    apiKey = ""
+    apiKey = properties.getProperty("pgyerApiKey")
+    wechatHook {
+        messageKey = properties.getProperty("wechatMsgKey")
+    }
 }

@@ -1,5 +1,7 @@
 package com.plum.pgyer.plugin.bean
 
+import org.gradle.util.internal.ConfigureUtil
+
 class PgyerExtension {
     /*(必填) API Key 点击获取_api_key*/
     public String apiKey = ""
@@ -23,4 +25,11 @@ class PgyerExtension {
     public String buildInstallEndDate = ""
     /*(选填)所需更新指定的渠道短链接，渠道短链接须为已创建成功的，并且只可指定一个渠道，字符串型，如：abcd*/
     public String buildChannelShortcut = ""
+
+    /*发送消息到*/
+    public WechatHookExtension wechatHook = new WechatHookExtension()
+
+    void wechatHook(Closure<WechatHookExtension> closure) {
+        ConfigureUtil.configure(closure, wechatHook)
+    }
 }

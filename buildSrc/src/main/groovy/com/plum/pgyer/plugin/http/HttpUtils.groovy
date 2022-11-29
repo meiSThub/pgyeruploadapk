@@ -107,4 +107,22 @@ class HttpUtils {
         println "code=$code,body=$body"
         return body
     }
+
+    /**
+     * 发送消息到企业微信
+     * @param messageToken
+     * @param message 消息内容，json格式
+     */
+    static void pushMessage(String messageToken, String message) {
+        println "====================推送消息start==========================="
+        String url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=$messageToken"
+        println "url=$url"
+        def body = RequestBody.create(MediaType.parse("application/json"), message)
+        def request = new Request.Builder().url(url).post(body).build()
+        OkHttpClient client = new OkHttpClient()
+        def response = client.newCall(request).execute()
+        println "code=${response.code()}"
+        println "body=${response.body().string()}"
+        println "====================推送消息end==========================="
+    }
 }

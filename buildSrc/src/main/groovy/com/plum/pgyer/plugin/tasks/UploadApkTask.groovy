@@ -1,8 +1,10 @@
 package com.plum.pgyer.plugin.tasks
 
 import com.plum.pgyer.plugin.bean.PgyerExtension
+import com.plum.pgyer.plugin.bean.WechatHookExtension
 import com.plum.pgyer.plugin.http.HttpUtils
 import com.plum.pgyer.plugin.utils.StringUtils
+import com.plum.pgyer.plugin.wechat.WechatMessage
 import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
@@ -33,6 +35,7 @@ class UploadApkTask extends DefaultTask {
             println "file name = ${file.absolutePath}"
             // 找到Apk文件，开始上传Apk到蒲公英
             def uploadResult = uploadApk(file, project.extensions.pgyer)
+            // 推送消息到企业微信，让测试方便下载Apk
             pushMessage(uploadResult)
         }
     }
@@ -42,11 +45,22 @@ class UploadApkTask extends DefaultTask {
      * @param shareApkInfo
      */
     void pushMessage(Object shareApkInfo) {
+        WechatHookExtension wechatHook = project.extensions.pgyer.wechatHook
+        if (!wechatHook.open || StringUtils.isEmpty(wechatHook.messageKey)) {
+            println "pushMessage：wechatHook,open=${wechatHook.open},messageKey=${wechatHook.messageKey}"
+            return
+        }
         // {"buildKey":"e92ff62b3f04f3ae893ce15b54b1ab80","buildType":"2","buildIsFirst":"0","buildIsLastest":"1","buildFileKey":"e92ff62b3f04f3ae893ce15b54b1ab80.apk","buildFileName":"app-huawei-debug.apk","buildFileSize":"5826489","buildName":"pgyer-upload-apk","buildVersion":"1.0","buildVersionNo":"1","buildBuildVersion":"12","buildIdentifier":"com.test.pgyer.upload.apk","buildIcon":"ae61335d32863e6a882839434cf52bb7","buildDescription":"","buildUpdateDescription":"","buildScreenshots":"","buildShortcutUrl":"orIh","buildCreated":"2022-11-26 20:00:39","buildUpdated":"2022-11-26 20:00:39","buildQRCodeURL":"https:\/\/www.pgyer.com\/app\/qrcodeHistory\/cd33a8930d0a5ab0475ad73043837ca7b26d9a9eead66aa7bb2df4c964a0f228"}
-        String buildQRCodeURL = shareApkInfo.buildQRCodeURL
-        String buildShortcutUrl = shareApkInfo.buildShortcutUrl
+        //        WechatMessage.pushMessage(shareApkInfo, wechatHook.messageKey)
+        WechatMessage.pushNewsMsg(shareApkInfo, wechatHook.messageKey)
     }
 
+    /**
+     * 上传Apk到蒲公英
+     * @param file Apk文件
+     * @param extension 扩招信息
+     * @return
+     */
     Object uploadApk(File file, PgyerExtension extension) {
         //1.获取上传Apk的url
         String cosTokenResult = HttpUtils.getCOSToken(extension)
@@ -70,6 +84,13 @@ class UploadApkTask extends DefaultTask {
         return shareResult
     }
 
+    /**
+     * 解析 Apk上传成功后 的信息，获取Apk的下载地址和二维码图片等
+     * @param shareApkInfo
+     * @param apiKey
+     * @param buildKey
+     * @return
+     */
     private Object checkShareInfo(String shareApkInfo, String apiKey, String buildKey) {
         if (StringUtils.isEmpty(shareApkInfo)) {
             return null
