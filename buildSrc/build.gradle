@@ -1,0 +1,25 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+apply from: 'register-plugin.gradle'
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs 'src/main/groovy'
+        }
+
+        resources {
+            srcDirs 'src/main/resources'
+        }
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
+}
+

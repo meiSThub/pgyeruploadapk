@@ -1,0 +1,14 @@
+//1、引入 java-gradle-plugin 插件
+apply plugin: 'java-gradle-plugin'
+
+//2、进行插件注册相关的配置
+gradlePlugin {
+    plugins {
+        greeting {
+            // 插件id
+            id = 'com.plum.pgyer.plugin'
+            // 插件实现类
+            implementationClass = 'com.plum.pgyer.plugin.UploadApkPlugin'
+        }
+    }
+}
