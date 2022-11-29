@@ -21,5 +21,6 @@ sourceSets {
 dependencies {
     implementation gradleApi()
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation "commons-codec:commons-codec:1.6"
 }
 

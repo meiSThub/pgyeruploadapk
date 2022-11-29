@@ -125,4 +125,59 @@ class HttpUtils {
         println "body=${response.body().string()}"
         println "====================推送消息end==========================="
     }
+
+    /**
+     * 下载图片
+     * @param imgUrl
+     * @param file
+     */
+    static void downloadImg(String imgUrl, File file) {
+        def request = new Request.Builder().url(imgUrl).build()
+        def client = new OkHttpClient()
+        def response = client.newCall(request).execute()
+        def inputStream = response.body().byteStream()
+        // apk-huawei-debug.png
+        if (file.exists()) {
+            file.delete()
+        }
+        if (!file.parentFile.exists()) {
+            file.parentFile.mkdirs()
+        }
+
+        FileOutputStream fos = null
+        BufferedInputStream bis = null
+        try {
+            fos = new FileOutputStream(file)
+            byte[] buffer = new byte[1024]
+            bis = new BufferedInputStream(inputStream)
+            int count = 0
+            while ((count = bis.read(buffer, 0, 1024)) != -1) {
+                fos.write(buffer, 0, count)
+            }
+        } catch (Exception e) {
+        } finally {
+            try {
+                if (fos != null) {
+                    fos.flush()
+                    fos.close()
+                }
+                if (bis != null) {
+                    bis.close()
+                }
+            } catch (Exception e1) {
+            }
+        }
+    }
+
+    /**
+     * 下载图片
+     * @param imgUrl
+     * @param file
+     */
+    static byte[] downloadImg(String imgUrl) {
+        def request = new Request.Builder().url(imgUrl).build()
+        def client = new OkHttpClient()
+        def response = client.newCall(request).execute()
+        return response.body().bytes()
+    }
 }

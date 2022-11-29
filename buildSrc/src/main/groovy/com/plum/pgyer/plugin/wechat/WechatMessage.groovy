@@ -2,7 +2,9 @@ package com.plum.pgyer.plugin.wechat
 
 import com.plum.pgyer.plugin.command.GitCommand
 import com.plum.pgyer.plugin.http.HttpUtils
+import com.plum.pgyer.plugin.utils.Base64Utils
 import com.plum.pgyer.plugin.utils.DateUtils
+import com.plum.pgyer.plugin.utils.MD5Utils
 import groovy.json.JsonOutput
 import groovy.json.StringEscapeUtils
 
@@ -16,7 +18,7 @@ class WechatMessage {
      * 推送消息到企业微信
      * @param shareApkInfo
      */
-    static void pushMessage(Object shareApkInfo, String messageKey) {
+    static void pushTemplateCardMsg(Object shareApkInfo, String messageKey) {
         String buildQRCodeURL = shareApkInfo.buildQRCodeURL
         String buildShortcutUrl = shareApkInfo.buildShortcutUrl
         // 消息体
@@ -84,6 +86,41 @@ ${DateUtils.format(System.currentTimeMillis())}
                     url: "https://www.pgyer.com/$buildShortcutUrl",
                     picurl: buildQRCodeURL
                 ]
+            ]
+        ]
+        String messageJson = StringEscapeUtils.unescapeJava(JsonOutput.toJson(messageContent))
+        println "pushMessage：messageJson=$messageJson"
+        HttpUtils.pushMessage(messageKey, messageJson)
+    }
+
+    /**
+     * 下载图片，并把获取图片的 md5值，base64值
+     * @param messageKey
+     * @param imageUrl 图片url
+     */
+    static void pushImageMsg(String messageKey, String imageUrl) {
+        // 下载图片
+        def bytes = HttpUtils.downloadImg(imageUrl)
+        // 把图片转成md5
+        String fileMd5 = MD5Utils.convertMD5(bytes)
+        // 把图片转成base64
+        String base64 = Base64Utils.encoder(bytes)
+        // 发送图片消息
+        pushImageMsg(messageKey, fileMd5, base64)
+    }
+
+    /**
+     * 图片消息
+     * @param shareApkInfo
+     * @param messageKey
+     */
+    static void pushImageMsg(String messageKey, String fileMd5, String fileBase64) {
+        // 消息体
+        def messageContent = [
+            msgtype: "image",
+            image: [
+                base64: fileBase64,
+                md5: fileMd5
             ]
         ]
         String messageJson = StringEscapeUtils.unescapeJava(JsonOutput.toJson(messageContent))

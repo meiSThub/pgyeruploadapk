@@ -80,5 +80,6 @@ pgyer {
     apiKey = properties.getProperty("pgyerApiKey")
     wechatHook {
         messageKey = properties.getProperty("wechatMsgKey")
+        msgType = 2
     }
 }
