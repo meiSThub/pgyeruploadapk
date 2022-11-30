@@ -1,0 +1,17 @@
+apply plugin: "maven-publish"
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven { url = uri('../repo') }
+        }
+        publications {
+            release(MavenPublication) {
+                from components.java
+                groupId = "com.plum.pgyer.plugin"
+                artifactId = 'uploadApk'
+                version = "1.0.0"
+            }
+        }
+    }
+}

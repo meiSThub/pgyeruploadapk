@@ -6,7 +6,7 @@ gradlePlugin {
     plugins {
         greeting {
             // 插件id
-            id = 'com.plum.pgyer.plugin.test'
+            id = 'com.plum.pgyer.plugin'
             // 插件实现类
             implementationClass = 'com.plum.pgyer.plugin.UploadApkPlugin'
         }

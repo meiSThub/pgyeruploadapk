@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.plum.pgyer.plugin'
+//    id 'com.plum.pgyer.plugin'
+    id 'com.plum.pgyer.plugin.test'
 }
 
 android {
