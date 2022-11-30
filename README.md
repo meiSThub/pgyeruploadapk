@@ -41,4 +41,4 @@ Apk打包完成后，上次Apk到蒲公英平台，并推送下载链接到企�
 
 ​	其他配置可以参考：[PgyerExtension](https://github.com/meiSThub/pgyeruploadapk/blob/master/pgyerplugin/src/main/groovy/com/plum/pgyer/plugin/bean/PgyerExtension.groovy)
 
-​	
+​	经过上面两步，配置就完成了。
