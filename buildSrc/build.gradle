@@ -4,7 +4,7 @@ repositories {
     mavenCentral()
 }
 
-apply from: 'register-plugin.gradle'
+//apply from: 'register-plugin.gradle'
 
 sourceSets {
     main {
@@ -18,9 +18,16 @@ sourceSets {
     }
 }
 
+sourceCompatibility = JavaVersion.VERSION_11
+
 dependencies {
     implementation gradleApi()
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
     implementation "commons-codec:commons-codec:1.6"
 }
 
+
+// 解决手动注册异常的问题
+afterEvaluate {
+    tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
+}
