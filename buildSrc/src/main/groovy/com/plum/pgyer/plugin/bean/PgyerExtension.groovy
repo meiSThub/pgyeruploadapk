@@ -3,6 +3,9 @@ package com.plum.pgyer.plugin.bean
 import org.gradle.util.internal.ConfigureUtil
 
 class PgyerExtension {
+    /*是否需要自动上传Apk到蒲公英，true：上传，false：不上传*/
+    public boolean enabled = true
+
     /*(必填) API Key 点击获取_api_key*/
     public String apiKey = ""
     /*(必填) 需要上传的应用类型，如果是iOS类型请传ios或ipa，如果是Android类型请传android或apk*/
