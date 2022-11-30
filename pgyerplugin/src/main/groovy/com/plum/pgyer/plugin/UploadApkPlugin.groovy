@@ -30,7 +30,8 @@ class UploadApkPlugin implements Plugin<Project> {
             println "buildType=${variant.buildType.name}"
             println "productFlavor=${variant.productFlavors}"
             task.buildType = variant.buildType.name
-            if (variant.productFlavors != null && variant.productFlavors.first() != null) {
+            if (variant.productFlavors != null && !variant.productFlavors.isEmpty()
+                && variant.productFlavors.first() != null) {
                 println "productFlavor=${variant.productFlavors.first().name}"
                 task.flavor = variant.productFlavors.first().name
             }
