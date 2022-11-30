@@ -1,0 +1,13 @@
+//apply plugin: 'com.plum.pgyer.plugin'
+apply plugin: 'com.plum.pgyer.plugin.test'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+pgyer {
+    apiKey = properties.getProperty("pgyerApiKey")
+    wechatHook {
+        messageKey = properties.getProperty("wechatMsgKey")
+        msgType = 4
+    }
+}
