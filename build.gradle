@@ -3,7 +3,7 @@ buildscript {
         //https://github.com/square/okhttp
         classpath "com.squareup.okhttp3:okhttp:4.9.3"
 //        classpath "com.plum.pgyer.plugin:uploadApk:1.0.0"
-//        classpath 'com.github.meiSThub:pgyeruploadapk:v1.0.0-beta'
+//        classpath 'com.github.meiSThub:pgyeruploadapk:v0.0.2'
     }
 }
 
