@@ -31,6 +31,7 @@ Apk打包完成后，上次Apk到蒲公英平台，并推送下载链接到企�
    apply plugin: 'com.plum.pgyer.plugin' // 应用插件
    
    pgyer {
+       open=true //是否允许上次Apk
        apiKey = "xxx" // 蒲公英平台的: _api_key
        wechatHook {
            messageKey = "xxx" // 企业微信群中，添加机器人时生成的webhookurl中的key
