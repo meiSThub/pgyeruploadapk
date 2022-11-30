@@ -2,6 +2,7 @@ package com.plum.pgyer.plugin
 
 import com.plum.pgyer.plugin.bean.PgyerExtension
 import com.plum.pgyer.plugin.tasks.UploadApkTask
+import com.plum.pgyer.plugin.utils.StringUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
