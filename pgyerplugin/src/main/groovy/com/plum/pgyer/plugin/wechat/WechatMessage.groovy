@@ -133,20 +133,23 @@ ${DateUtils.format(System.currentTimeMillis())}
      * @param shareApkInfo
      * @param messageKey
      */
-    static void pushMarkdownMsg(String messageKey, String buildShortcutUrl) {
+    static void pushMarkdownMsg(String messageKey, String buildShortcutUrl, String appName, String appVersionName) {
         String apkUrl = "https://www.pgyer.com/$buildShortcutUrl"
         // 消息体
         def messageContent = [
             msgtype: "markdown",
             markdown: [
                 content: """
-Apk上传成功，请相关同事注意。\n
-         >打包分支: <font color=\\"comment\\">${GitCommand.getCurrentBranch()}</font>
-         >最近一条提交记录:\n <font color=\\"comment\\">${GitCommand.getOneRecentLog()}</font>
-         >打包时间: <font color=\\"comment\\">${DateUtils.format(System.currentTimeMillis())}</font>
-         >官网下载地址: <font color=\\"comment\\">[$apkUrl]($apkUrl)</font>
+## 应用更新提醒\n
+应用名称: <font color=\\"comment\\">$appName</font>
+应用类型: <font color=\\"comment\\">Android</font>
+版本名称: <font color=\\"comment\\">$appVersionName</font>
+打包分支: <font color=\\"comment\\">${GitCommand.getCurrentBranch()}</font>
+更新时间: <font color=\\"comment\\">${DateUtils.format(System.currentTimeMillis())}</font>
+更新内容: <font color=\\"comment\\">${GitCommand.getOneRecentLog()}</font>
+点击查看应用: <font color=\\"comment\\">[$apkUrl]($apkUrl)</font>
 """,
-                mentioned_mobile_list: ["18320752606","@all"]
+                mentioned_mobile_list: ["@all"]
             ]
         ]
         String messageJson = StringEscapeUtils.unescapeJava(JsonOutput.toJson(messageContent))

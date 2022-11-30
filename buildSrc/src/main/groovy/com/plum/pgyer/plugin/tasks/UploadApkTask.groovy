@@ -17,6 +17,20 @@ class UploadApkTask extends DefaultTask {
     public String buildType = ""
     public String flavor = ""
 
+    private String appVersionName = ""
+    private String appName = ""
+
+    public UploadApkTask() {
+        try {
+            if (project.plugins.hasPlugin("com.android.application")) {
+                appVersionName = project.android.defaultConfig.versionName
+            }
+            appName = project.rootProject.name
+            println "appName=$appName,appVersionName=$appVersionName"
+        } catch (Exception e) {
+        }
+    }
+
     @TaskAction
     void uploadApk() {
         println "UploadApkTak,pgyer=${project.extensions.pgyer}"
@@ -52,19 +66,21 @@ class UploadApkTask extends DefaultTask {
         }
         // {"buildKey":"e92ff62b3f04f3ae893ce15b54b1ab80","buildType":"2","buildIsFirst":"0","buildIsLastest":"1","buildFileKey":"e92ff62b3f04f3ae893ce15b54b1ab80.apk","buildFileName":"app-huawei-debug.apk","buildFileSize":"5826489","buildName":"pgyer-upload-apk","buildVersion":"1.0","buildVersionNo":"1","buildBuildVersion":"12","buildIdentifier":"com.test.pgyer.upload.apk","buildIcon":"ae61335d32863e6a882839434cf52bb7","buildDescription":"","buildUpdateDescription":"","buildScreenshots":"","buildShortcutUrl":"orIh","buildCreated":"2022-11-26 20:00:39","buildUpdated":"2022-11-26 20:00:39","buildQRCodeURL":"https:\/\/www.pgyer.com\/app\/qrcodeHistory\/cd33a8930d0a5ab0475ad73043837ca7b26d9a9eead66aa7bb2df4c964a0f228"}
         //        WechatMessage.pushMessage(shareApkInfo, wechatHook.messageKey)
-
+        String buildShortcutUrl = shareApkInfo.buildShortcutUrl
+        String buildQRCodeURL = shareApkInfo.buildQRCodeURL
         switch (wechatHook.msgType) {
             case 0: WechatMessage.pushTemplateCardMsg(shareApkInfo, wechatHook.messageKey)
                 break
             case 1: WechatMessage.pushNewsMsg(shareApkInfo, wechatHook.messageKey)
                 break
-            case 2: WechatMessage.pushImageMsg(wechatHook.messageKey, shareApkInfo.buildQRCodeURL)
+            case 2: WechatMessage.pushImageMsg(wechatHook.messageKey, buildQRCodeURL)
                 break
-            case 3: WechatMessage.pushMarkdownMsg(wechatHook.messageKey, shareApkInfo.buildShortcutUrl)
+            case 3:
+                WechatMessage.pushMarkdownMsg(wechatHook.messageKey, buildShortcutUrl, appName, appVersionName)
                 break
             case 4:
-                WechatMessage.pushMarkdownMsg(wechatHook.messageKey, shareApkInfo.buildShortcutUrl)
-                WechatMessage.pushImageMsg(wechatHook.messageKey, shareApkInfo.buildQRCodeURL)
+                WechatMessage.pushMarkdownMsg(wechatHook.messageKey, buildShortcutUrl, appName, appVersionName)
+                WechatMessage.pushImageMsg(wechatHook.messageKey, buildQRCodeURL)
                 break
             default:
                 println "未知消息类型：${wechatHook.msgType}"
