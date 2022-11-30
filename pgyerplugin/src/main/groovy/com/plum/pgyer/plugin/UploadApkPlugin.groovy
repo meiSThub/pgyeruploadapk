@@ -13,7 +13,7 @@ class UploadApkPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        println "test插件生效"
+        println "插件生效"
         if (!project.plugins.hasPlugin("com.android.application")) {
             println "只有App工程，才可以使用该插件上传Apk"
             return
