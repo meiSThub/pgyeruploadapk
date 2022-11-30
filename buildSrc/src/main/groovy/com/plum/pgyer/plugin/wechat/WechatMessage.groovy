@@ -127,4 +127,30 @@ ${DateUtils.format(System.currentTimeMillis())}
         println "pushMessage：messageJson=$messageJson"
         HttpUtils.pushMessage(messageKey, messageJson)
     }
+
+    /**
+     * markdown消息
+     * @param shareApkInfo
+     * @param messageKey
+     */
+    static void pushMarkdownMsg(String messageKey, String buildShortcutUrl) {
+        String apkUrl = "https://www.pgyer.com/$buildShortcutUrl"
+        // 消息体
+        def messageContent = [
+            msgtype: "markdown",
+            markdown: [
+                content: """
+Apk上传成功，请相关同事注意。\n
+         >打包分支: <font color=\\"comment\\">${GitCommand.getCurrentBranch()}</font>
+         >最近一条提交记录:\n <font color=\\"comment\\">${GitCommand.getOneRecentLog()}</font>
+         >打包时间: <font color=\\"comment\\">${DateUtils.format(System.currentTimeMillis())}</font>
+         >官网下载地址: <font color=\\"comment\\">[$apkUrl]($apkUrl)</font>
+""",
+                mentioned_mobile_list: ["18320752606","@all"]
+            ]
+        ]
+        String messageJson = StringEscapeUtils.unescapeJava(JsonOutput.toJson(messageContent))
+        println "pushMessage：messageJson=$messageJson"
+        HttpUtils.pushMessage(messageKey, messageJson)
+    }
 }

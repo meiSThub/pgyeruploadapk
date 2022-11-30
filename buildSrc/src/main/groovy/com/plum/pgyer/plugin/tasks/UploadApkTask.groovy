@@ -60,6 +60,12 @@ class UploadApkTask extends DefaultTask {
                 break
             case 2: WechatMessage.pushImageMsg(wechatHook.messageKey, shareApkInfo.buildQRCodeURL)
                 break
+            case 3: WechatMessage.pushMarkdownMsg(wechatHook.messageKey, shareApkInfo.buildShortcutUrl)
+                break
+            case 4:
+                WechatMessage.pushMarkdownMsg(wechatHook.messageKey, shareApkInfo.buildShortcutUrl)
+                WechatMessage.pushImageMsg(wechatHook.messageKey, shareApkInfo.buildQRCodeURL)
+                break
             default:
                 println "未知消息类型：${wechatHook.msgType}"
         }
