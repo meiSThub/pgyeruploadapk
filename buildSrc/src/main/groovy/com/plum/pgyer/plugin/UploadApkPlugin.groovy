@@ -22,7 +22,7 @@ class UploadApkPlugin implements Plugin<Project> {
         def extension = project.extensions.create('pgyer', PgyerExtension)
         project.afterEvaluate {
             println "enabled=${extension.enabled}"
-            if (!extension.enabled || StringUtils.isEmpty(extension.apiKey)) {
+            if (StringUtils.isEmpty(extension.apiKey)) {
                 println """
 禁止上传Apk，如需开启，在app-module的build.gradle文件中，增加如下配置：
 pgyer {
@@ -54,7 +54,16 @@ pgyer {
                 def assembleTask = project.tasks.findByPath(assembleTaskName)
                 println "assembleTask=$assembleTask"
                 // 打包任务执行完成之后，在执行上传Apk的任务
-                assembleTask.finalizedBy(task)
+                def disableTask = extension.disableTypes
+                boolean enabledTask = true
+                if (disableTask != null && !disableTask.isEmpty()) {
+                    enabledTask = !(disableTask.contains(task.buildType) || disableTask.contains(task.flavor))
+                }
+                println "assembleTaskName=${assembleTask.name},enabledTask=$enabledTask,disableTask=$disableTask"
+                if (extension.enabled && enabledTask) {
+                    // 如果允许自动上传，则把上传Apk的任务挂在打包任务之后
+                    assembleTask.finalizedBy(task)
+                }
             }
         }
     }

@@ -5,6 +5,8 @@ import org.gradle.util.internal.ConfigureUtil
 class PgyerExtension {
     /*是否需要自动上传Apk到蒲公英，true：上传，false：不上传*/
     public boolean enabled = true
+    /*禁止自动上传Apk的BuildType和productFlavors 名称列表*/
+    public List<String> disableTypes = ['debug']
 
     /*(必填) API Key 点击获取_api_key*/
     public String apiKey = ""
