@@ -20,4 +20,12 @@ class GitCommand {
     static def getCurrentBranch() {
         return 'git symbolic-ref --short HEAD'.execute().text.trim()
     }
+
+    /**
+     * 获取git的用户名
+     * @return
+     */
+    static def getUploadUserName() {
+        return 'git config user.name'.execute().text.trim()
+    }
 }
