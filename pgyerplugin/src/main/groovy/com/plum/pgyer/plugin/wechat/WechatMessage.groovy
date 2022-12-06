@@ -143,6 +143,7 @@ ${DateUtils.format(System.currentTimeMillis())}
 ## 应用更新提醒\n
 应用名称: <font color=\\"comment\\">$appName</font>
 应用类型: <font color=\\"comment\\">Android</font>
+打 包 人: <font color=\\"comment\\">${GitCommand.getUploadUserName()}</font>
 版本名称: <font color=\\"comment\\">$appVersionName</font>
 打包分支: <font color=\\"comment\\">${GitCommand.getCurrentBranch()}</font>
 更新时间: <font color=\\"comment\\">${DateUtils.format(System.currentTimeMillis())}</font>
